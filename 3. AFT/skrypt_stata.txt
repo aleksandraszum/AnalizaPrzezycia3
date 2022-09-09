@@ -1,0 +1,15 @@
+stset dftime, failure(dfstat==1)
+xi: streg clinstg chemo i.age_kat i.hgb_kat, dist(lognormal)
+predict csln, csnell
+stset csln, failure(dfstat==1) scale(1)
+sts generate surv_csln = s
+gen ln_csln = -ln(surv_csln)
+twoway(scatter ln_csln csln)(line csln csln , sort)
+
+stset dftime, failure(dfstat==1)
+xi: streg clinstg chemo i.age_kat i.hgb_kat, dist(loglogistic)
+predict csll, csnell
+stset csll, failure(dfstat==1) scale(1)
+sts generate surv_csll = s
+gen ln_csll = -ln(surv_csll)
+twoway(scatter ln_csll csll)(line csll csll , sort)
