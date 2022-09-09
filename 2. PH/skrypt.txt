@@ -1,0 +1,17 @@
+import excel "C:\Users\X\Documents\projekt3_dane.xls", sheet("Sheet1") firstrow
+stset dftime, failure(dfstat==1)
+stcox, estimate
+predict mart, mgale
+lowess mart age, bwidth(0.8)
+lowess mart hgb, bwidth(0.8)
+generate hgb3 = hgb*hgb*hgb 
+lowess mart hgb3, bwidth(0.8)
+stcox hgb3 clinstg chemo, strata(age) 
+estat phtest, detail
+predict sch*, scaledsch
+scatter sch1 _t || lfit sch1 _t
+scatter sch2 _t || lfit sch1 _t
+scatter sch3 _t || lfit sch1 _t
+predict dev_res, deviance
+predict lp, xb
+twoway (scatter dev_res lp)
